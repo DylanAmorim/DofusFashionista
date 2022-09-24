@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3.5
 
 # Copyright (C) 2020 The Dofus Fashionista
 # 
@@ -82,7 +82,7 @@ GEN_CONFIG_FILE = {
 
 def main():
     if getpass.getuser() != 'root':
-        print 'Run this script as root.'
+        print('Run this script as root.')
         return
         
     parser = argparse.ArgumentParser()
@@ -104,26 +104,26 @@ def main():
     path_config_file_path = CONFIG_DIR + '/config'
     with open(path_config_file_path, 'w') as f:
         f.write(os.getcwd())
-    print 'Wrote path to %s' % path_config_file_path
+    print ('Wrote path to %s', path_config_file_path)
     
     path_gen_config_file_path = CONFIG_DIR + '/gen_config.json'
     if not os.path.exists(path_gen_config_file_path):
         with open(path_gen_config_file_path, 'w') as f:
             f.write(json.dumps(GEN_CONFIG_FILE, indent=4, sort_keys=True))
-        print 'Wrote path to %s. Please fill it out manually.' % path_gen_config_file_path
+        print ('Wrote path to %s. Please fill it out manually.' , path_gen_config_file_path)
         raw_input('Press Enter once it is done.')
     else:
-        print 'Skipping creation of %s: already exists.' % path_config_file_path
+        print ('Skipping creation of %s: already exists.' ,path_config_file_path)
     
     static_config_file_path = CONFIG_DIR + '/serve_static'
     with open(static_config_file_path, 'w') as f:
         f.write(str(args.serve_static_files))
-    print 'Wrote serve static to %s' % static_config_file_path
+    print ('Wrote serve static to %s' , static_config_file_path)
 
     debug_config_file_path = CONFIG_DIR + '/debug_mode'
     with open(debug_config_file_path, 'w') as f:
         f.write(str(args.debug_mode))
-    print 'Wrote debug mode to %s' % debug_config_file_path
+    print ('Wrote debug mode to %s' , debug_config_file_path)
 
     with open(path_gen_config_file_path, 'r') as f:
         GEN_CONFIGS = json.loads(f.read())
@@ -142,19 +142,19 @@ password=%s
        GEN_CONFIGS['mysql_USER'], 
        GEN_CONFIGS['mysql_PASSWORD']))
     call(['chmod', '644', mysql_config_file_path])
-    print 'Wrote MySQL config to %s' % mysql_config_file_path
+    print ('Wrote MySQL config to %s' , mysql_config_file_path)
 
     if args.install_deps:
         _print_header('Installing dependencies')
         call(['apt-get', 'install'] + APT_GET_PACKAGES_TO_INSTALL)
-        call(['python', '-m', 'pip', 'install'] + PIP_PACKAGES_TO_INSTALL);
+        call(['python3.5', '-m', 'pip', 'install'] + PIP_PACKAGES_TO_INSTALL)
 
     _print_header('Done')
 
 def _print_header(header):
-    print '=' * 60
-    print header
-    print '=' * 60
+    print ('=' * 60)
+    print (header)
+    print ('=' * 60)
 
 if __name__ == '__main__':
     main()

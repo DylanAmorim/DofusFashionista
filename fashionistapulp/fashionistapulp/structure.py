@@ -23,15 +23,15 @@ import sqlite3
 import itertools
 from threading import Lock
 
-from dofus_constants import (DamageDigest, DAMAGE_TYPES, NEUTRAL, STAT_ORDER,
+from .dofus_constants import (DamageDigest, DAMAGE_TYPES, NEUTRAL, STAT_ORDER,
                              WEIRD_CONDITION_FROM_ID)
-from dofus_stat import Stat
-from fashion_util import normalize_name, strip_accents
-from fashionista_config import (get_items_db_path, load_items_db_from_dump)
-from item import Item
-from set import Set
-from translation import NON_EN_LANGUAGES
-from weapon import Weapon, WeaponType
+from .dofus_stat import Stat
+from .fashion_util import normalize_name, strip_accents
+from .fashionista_config import (get_items_db_path, load_items_db_from_dump)
+from .item import Item
+from .set import Set
+from .translation import NON_EN_LANGUAGES
+from .weapon import Weapon, WeaponType
 from django.templatetags.i18n import language
 from django.utils.translation import ugettext as _
 
@@ -48,7 +48,7 @@ def get_structure():
         with lock:
             if structure_singleton is None:
                 structure_singleton = Structure()
-                print 'Structure created with %d bytes' % len(pickle.dumps(structure_singleton))
+                print ('Structure created')
     return structure_singleton
 
 def invalidate_structure():
@@ -134,12 +134,12 @@ class Structure:
                 if this_item_set:
                     this_item_set.add_item(item_id)
                 else:
-                    print "COULD NOT FIND SET %s" % this_item_set
+                    print ("COULD NOT FIND SET %s" , this_item_set)
                 
             if item.ankama_id is None:
-                print '%s [%d] is missing Ankama ID' % (item.name, item.id)
+                print ('%s [%d] is missing Ankama ID' , (item.name, item.id))
             if item.ankama_type is None:
-                print '%s [%d] is missing Ankama type' % (item.name, item.id)
+                print ('%s [%d] is missing Ankama type' , (item.name, item.id))
                 
     def read_types_table(self):
         c = self.conn.cursor()
@@ -213,7 +213,7 @@ class Structure:
             if item:
                 item.localized_names[lang] = name
                 pass
-            for _, item_list in or_items.iteritems():
+            for _, item_list in or_items.items():
                 for item in item_list:
                     if item.id == item_id:
                         item.localized_names[lang] = name
@@ -229,7 +229,7 @@ class Structure:
             elif item_set_id in self.dt_sets_dict:
                 item_set = self.dt_sets_dict[item_set_id]
             else:
-                print "SET %d NOT FOUND" % item_set_id
+                print ("SET %d NOT FOUND" , item_set_id)
                 return
             item_set.localized_names[lang]= name
 
@@ -276,7 +276,7 @@ class Structure:
             self.sets_dict[new_set.id] = new_set
         
         if "Gelano (#1)" not in self.items_dict_name:
-            print 'Gelano (#1) not there, inserting'
+            print ('Gelano (#1) not there, inserting')
             item = Item()
             item.id = max(self.items_dict.keys()) + 1
             item.name = "Gelano (#1)"
@@ -293,7 +293,7 @@ class Structure:
             self.sets_dict[item.set].add_item(item.id)
             
         if "Gelano (#1)" not in self.dt_items_dict_name:
-            print 'Gelano (#1) not there (dofus touch), inserting'
+            print ('Gelano (#1) not there (dofus touch), inserting')
             item = Item()
             item.id = max(self.dt_items_dict.keys()) + 1
             item.name = "Gelano (#1)"
@@ -311,7 +311,7 @@ class Structure:
             self.dt_sets_dict[item.set].add_item(item.id)
 
         if "Gelano (#2)" not in self.items_dict_name:
-            print 'Gelano (#2) not there, inserting'
+            print ('Gelano (#2) not there, inserting')
             item = Item()
             item.id = max(self.items_dict.keys()) + 1
             item.name = "Gelano (#2)"
@@ -326,7 +326,7 @@ class Structure:
             self.sets_dict[item.set].add_item(item.id)
 
         if "Gelano (#2)" not in self.dt_items_dict_name:
-            print 'Gelano (#2) not there (dofus touch), inserting'
+            print ('Gelano (#2) not there (dofus touch), inserting')
             item = Item()
             item.id = max(self.dt_items_dict.keys()) + 1
             item.name = "Gelano (#2)"
@@ -370,8 +370,11 @@ class Structure:
     def read_extra_lines_table(self):
         c = self.conn.cursor()
         for entry in c.execute('SELECT item, line, language FROM extra_lines'):
-            item_id = entry[0]         
-            lines = pickle.loads(str(entry[1]))
+            item_id = entry[0]
+            if isinstance(entry[1], str):
+                lines = pickle.loads(str.encode(entry[1]))
+            else:
+                lines = pickle.loads(entry[1])
             language = entry[2]
             assert type(lines) is list
             item = self.get_item_by_id(item_id)
@@ -467,17 +470,17 @@ class Structure:
                     self.weapons_dict_by_name[item_name] = w
             w.weapon_type = weapon_type
                 
-        for weapon_name, w in itertools.chain(self.weapons_dict_by_name.iteritems(),
-                                              self.dt_weapons_dict_by_name.iteritems()):
+        for weapon_name, w in itertools.chain(self.weapons_dict_by_name.items(),
+                                              self.dt_weapons_dict_by_name.items()):
             w.has_crits = (w.crit_bonus is not None)
             if not w.has_crits and w.crit_chance is not None:
-                print '%s is missing crit_bonus' % weapon_name
+                print ('%s is missing crit_bonus' , weapon_name)
             if w.crit_chance is None and w.has_crits:
-                print '%s is missing crit_chance' % weapon_name
+                print ('%s is missing crit_chance' , weapon_name)
             if w.ap is None:
-                print '%s is missing ap' % weapon_name
+                print ('%s is missing ap' ,weapon_name)
             if w.weapon_type is None:
-                print '%s is missing weapon type' % weapon_name
+                print ('%s is missing weapon type' , weapon_name)
     
             w.base_hit = []
             if w.has_crits:
@@ -560,7 +563,7 @@ class Structure:
             elif set_id in self.dt_sets_dict:
                 item_set = self.dt_sets_dict[set_id]
             else:
-                print "SET %d NOT FOUND" % set_id
+                print ("SET %d NOT FOUND" , set_id)
                 return
             item_set.bonus.append((num_items, stat_id, value))
             stat_key = self.get_stat_by_id(stat_id).key
@@ -788,7 +791,7 @@ class Structure:
         return self.stats_list_names_sorted
         
     def get_type_id_by_name(self, name):
-        for type_id, type_name in self.types_dict.iteritems():
+        for type_id, type_name in self.types_dict.items():
             if type_name == name:
                 return type_id
         return None
@@ -796,9 +799,9 @@ class Structure:
     def get_set_id_by_name(self, name, dofus_touch=False):
         set_list = []
         if dofus_touch:
-            set_list = self.dt_sets_dict.iteritems()
+            set_list = self.dt_sets_dict.items()
         else:
-            set_list = self.sets_dict.iteritems()  
+            set_list = self.sets_dict.items()  
         for _, item_set in set_list:
             if item_set.name == name:
                 return item_set.id

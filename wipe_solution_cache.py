@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3.5
 
 # Copyright (C) 2020 The Dofus Fashionista
 # 
@@ -77,7 +77,7 @@ def save_dump_hash(dump_hash):
     print_with_time('Done.')
 
 def print_with_time(s):
-    print '[%s] %s' % (datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), s)
+    print ('[%s] %s' , (datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), s))
 
 if __name__ == '__main__':
     main()

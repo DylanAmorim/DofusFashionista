@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3.5
 
 # Copyright (C) 2020 The Dofus Fashionista
 # 
@@ -20,24 +20,24 @@ import getpass
 from subprocess import call
 
 def main():
-    if getpass.getuser() == 'root':
-        print 'Run this script as a regular user, not as root.'
-        return
+    # if getpass.getuser() == 'root':
+    #     print 'Run this script as a regular user, not as root.'
+    #     return
 
     _print_header('Creating database')
     call(['mysql', '-e', 'CREATE DATABASE IF NOT EXISTS fashionista;'])
 
     _print_header('Syncing db')
-    call(['python', 'fashionsite/manage.py', 'syncdb'])
-    call(['python', 'fashionsite/manage.py', 'migrate', 'chardata'])
+    call(['python3.5', 'fashionsite/manage.py', 'syncdb'])
+    call(['python3.5', 'fashionsite/manage.py', 'migrate', 'chardata'])
     call(['chmod', '777', 'fashionsite'])
 
     _print_header('Done')
 
 def _print_header(header):
-    print '=' * 60
-    print header
-    print '=' * 60
+    print ('=' * 60)
+    print (header)
+    print ('=' * 60)
 
 if __name__ == '__main__':
     main()

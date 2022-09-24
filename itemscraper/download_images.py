@@ -34,12 +34,12 @@ def main():
             for entry in json.load(f):
                 image_path = folder + '/' + entry['name'] + '.png'
                 if not os.path.isfile(image_path):
-                    print '[%d] Downloading %s' % (i, entry['name'])
+                    print ('[%d] Downloading %s' , (i, entry['name']))
                     urllib.urlretrieve(entry['image_url'],
                                        image_path)
                     time.sleep(1)
                 else:
-                    print 'Skipping %s' % entry['name']
+                    print ('Skipping %s' , entry['name'])
                 i += 1
 
 main()
