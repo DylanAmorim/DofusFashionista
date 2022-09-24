@@ -44,7 +44,7 @@ PIP_PACKAGES_TO_INSTALL = [
     'python-social-auth==0.2.21', # Federated SSO.
     'social-auth-core',
     'social-auth-app-django',
-    'PuLP', # Bindings for LP solver.
+    'PuLP==2.0', # Bindings for LP solver.
     'Scrapy', # Web crawler.
     'jsonpickle', # Powerful json encoder for ajax.
     'django-htmlmin', # Minifier for HTML.

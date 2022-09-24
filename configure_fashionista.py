@@ -22,7 +22,7 @@ from subprocess import call
 def main():
     if getpass.getuser() == 'root':
         print 'Run this script as a regular user, not as root.'
-        return
+        #return
 
     _print_header('Creating database')
     call(['mysql', '-e', 'CREATE DATABASE IF NOT EXISTS fashionista;'])
