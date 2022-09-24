@@ -1,4 +1,5 @@
 # Prerequisites
+
 ## Python 2.7.18
 
 ````bash
@@ -24,16 +25,21 @@ You can get get-pip.py for a specific version of pip.
 I did :
 
 ````bash
- curl https://bootstrap.pypa.io/pip/3.4/get-pip.py -o get-pip.py 
- ````
+curl https://bootstrap.pypa.io/pip/3.4/get-pip.py -o get-pip.py 
+ZZ````
 
 but I let the file inside my project if needed, then use this command :
 
 ````bash
 python ./get-pip.py
 ````
+## Mysql
 
-
+````bash
+sudo apt install mysql-server
+sudo mysql_secure_installation
+service mysql start
+````
 # dofusfashionista
 The Dofus Fashionista, an equipment advisor for Dofus
 
