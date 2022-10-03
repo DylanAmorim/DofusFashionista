@@ -42,7 +42,7 @@ APT_GET_PACKAGES_TO_INSTALL = [
 PIP_PACKAGES_TO_INSTALL = [
     'Django==1.8.13.....', # Application server.
     'python-social-auth==0.2.21', # Federated SSO.
-    'social-auth-core',
+    'social-auth-core==3.4.0',
     'social-auth-app-django',
     'PuLP==2.0', # Bindings for LP solver.
     'Scrapy', # Web crawler.
