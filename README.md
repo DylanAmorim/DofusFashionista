@@ -26,7 +26,7 @@ I did :
 
 ````bash
 curl https://bootstrap.pypa.io/pip/3.4/get-pip.py -o get-pip.py 
-ZZ````
+````
 
 but I let the file inside my project if needed, then use this command :
 
@@ -37,9 +37,17 @@ python ./get-pip.py
 
 ````bash
 sudo apt install mysql-server
-sudo mysql_secure_installation
-service mysql start
+sudo service mysql start
 ````
+
+## Other packages you can be missing
+```bash
+sudo apt-get install libmysqlclient-dev
+sudo apt-get install sqlite3 libsqlite3-dev
+# sudo apt-get install python-dev -> if fatal error: Python.h: No such file or directory
+# sudo wget https://raw.githubusercontent.com/paulfitz/mysql-connector-c/master/include/my_config.h -O /usr/include/mysql/my_config.h -> if fatal error: my_config.h: No such file or directory
+```
+
 # dofusfashionista
 The Dofus Fashionista, an equipment advisor for Dofus
 
@@ -51,9 +59,11 @@ chmod 777 fashionista
 chmod 777 fashionista/fashionistapulp/fashionistapulp  
 cd fashionista  
 sudo ./configure_fashionista_root.py -i -s -d  
-./configure_fashionista.py  
+sudo ./configure_fashionista.py  
 sudo ./run_fashionista.sh  
 ````
+
+Caution : No capital letter in PYHTONPATH value
 
 # Reference
 
